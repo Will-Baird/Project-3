@@ -7,30 +7,29 @@ import { Col, Row, Container } from "../../components/Grid";
 import { List, ListItem } from "../../components/List";
 import { Input, TextArea, FormBtn } from "../../components/Form";
 
-class Services extends Component {
+class Books extends Component {
   state = {
-    services: [],
-    service: "",
-    discription: "",
-    units_in: "",
-    units_out:""
+    books: [],
+    title: "",
+    author: "",
+    synopsis: ""
   };
 
   componentDidMount() {
-    this.loadServices();
+    this.loadBooks();
   }
 
-  loadServices = () => {
-    API.getServices()
+  loadBooks = () => {
+    API.getBooks()
       .then(res =>
-        this.setState({ services: res.data, service: "", discription: "", units_in: "", units_out: "" })
+        this.setState({ books: res.data, title: "", author: "", synopsis: "" })
       )
       .catch(err => console.log(err));
   };
 
-  deleteService = id => {
-    API.deleteService(id)
-      .then(res => this.loadServices())
+  deleteBook = id => {
+    API.deleteBook(id)
+      .then(res => this.loadBooks())
       .catch(err => console.log(err));
   };
 
@@ -41,18 +40,18 @@ class Services extends Component {
     });
   };
 
-//   handleFormSubmit = event => {
-//     event.preventDefault();
-//     if (this.state.title && this.state.author) {
-//       API.saveBook({
-//         title: this.state.title,
-//         author: this.state.author,
-//         synopsis: this.state.synopsis
-//       })
-//         .then(res => this.loadBooks())
-//         .catch(err => console.log(err));
-//     }
-//   };
+  handleFormSubmit = event => {
+    event.preventDefault();
+    if (this.state.title && this.state.author) {
+      API.saveBook({
+        title: this.state.title,
+        author: this.state.author,
+        synopsis: this.state.synopsis
+      })
+        .then(res => this.loadBooks())
+        .catch(err => console.log(err));
+    }
+  };
 
   render() {
     return (
@@ -60,7 +59,7 @@ class Services extends Component {
         <Row>
           <Col size="md-6">
             <Jumbotron>
-              <h1>Services</h1>
+              <h1>What Books Should I Read?</h1>
             </Jumbotron>
             <form>
               <Input
