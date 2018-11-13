@@ -10,7 +10,7 @@ import { Input, FormBtn } from "../../components/Form";
 class Products extends Component {
   state = {
     products: [],
-    product: "",
+    name: "",
     quantity: "",
   };
 
@@ -21,7 +21,7 @@ class Products extends Component {
   loadProducts = () => {
     API.getProducts()
       .then(res =>
-        this.setState({ Products: res.data, product: "", quantity: ""})
+        this.setState({ products: res.data, name: "", quantity: ""})
       )
       .catch(err => console.log(err));
   };
@@ -41,9 +41,9 @@ class Products extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    if (this.state.product && this.state.quantity) {
+    if (this.state.name && this.state.quantity) {
       API.saveProduct({
-        product: this.state.product,
+        name: this.state.name,
         quantity: this.state.quantity
       })
         .then(res => this.loadProducts())
@@ -61,7 +61,7 @@ class Products extends Component {
             </Jumbotron>
             <form>
               <Input
-                value={this.state.product}
+                value={this.state.name}
                 onChange={this.handleInputChange}
                 name="product"
                 placeholder="product (required)"
@@ -79,7 +79,7 @@ class Products extends Component {
                 placeholder="Synopsis (Optional)"
               /> */}
               <FormBtn
-                disabled={!(this.state.quantity && this.state.product)}
+                disabled={!(this.state.quantity && this.state.name)}
                 onClick={this.handleFormSubmit}
               >
                 Submit Product
@@ -90,16 +90,16 @@ class Products extends Component {
             <Jumbotron>
               <h1>Products On My List</h1>
             </Jumbotron>
-            {this.state.Products.length ? (
+            {this.state.products.length ? (
               <List>
-                {this.state.Products.map(Product => (
-                  <ListItem key={Product._id}>
-                    <Link to={"/Products/" + Product._id}>
+                {this.state.products.map(product => (
+                  <ListItem key={product._id}>
+                    <Link to={"/Products/" + product._id}>
                       <strong>
-                        {Product.product} by {Product.quantity}
+                        {product.product} by {product.quantity}
                       </strong>
                     </Link>
-                    <DeleteBtn onClick={() => this.deleteProduct(Product._id)} />
+                    <DeleteBtn onClick={() => this.deleteProduct(product._id)} />
                   </ListItem>
                 ))}
               </List>
